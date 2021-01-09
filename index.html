@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Аудио плеер - Audio player</title>
+ <link rel="stylesheet" href="./style.min.css">
+</head>
+
+<body>
+
+
+
+ <main>
+
+
+
+  <section>
+
+   <div class="player-audio">
+    <button class="player-audio__next-btn"></button>
+    <img src="./img/jony-kometa.jpg" alt="Постер" class="player-audio__poster">
+    <audio class="player-audio__track" controls src="./music/jony-kometa.mp3" type="audio/mp3" preload="auto"></audio>
+   </div>
+
+  </section>
+
+
+
+ </main>
+
+ <script src="./libs/audiojs/audiojs/audio.min.js"></script>
+
+ <script>
+  var trackList = [
+   [
+    './music/jony-kometa.mp3',
+    true,
+    './img/jony-kometa.jpg'
+   ],
+   [
+    '/music/elman-antigerojj.mp3',
+    false,
+    './img/elman-antigerojj.jpg'
+   ],
+   [
+    '/music/randall-wahran.mp3',
+    false,
+    './img/randall-wahran.jpg'
+   ]
+  ];
+
+  var audioPlayerNextButton = document.querySelector('.player-audio__next-btn');
+  var audioPlayerPoster = document.querySelector('.player-audio__poster');
+  var audioPlayer = audiojs.createAll({
+   trackEnded: function () {
+    for (var i in trackList) {
+     if (trackList[i][1] === true) {
+      trackList[i][1] = false;
+      var nextTrack = +i + 1;
+      if (trackList.length === nextTrack) {
+       var nextTrack = 0;
+      }
+     }
+    }
+    audioPlayer.load(trackList[nextTrack][0]);
+    audioPlayer.play();
+    trackList[nextTrack][1] = true;
+    audioPlayerPoster.src = trackList[nextTrack][2];
+   }
+  })[0];
+
+  // next track
+  audioPlayerNextButton.onclick = function (e) {
+   e.preventDefault();
+   for (var i in trackList) {
+    if (trackList[i][1] === true) {
+     trackList[i][1] = false;
+     var nextTrack = +i + 1;
+     if (trackList.length === nextTrack) {
+      var nextTrack = 0;
+     }
+    }
+   }
+   audioPlayer.load(trackList[nextTrack][0]);
+   audioPlayer.play();
+   trackList[nextTrack][1] = true;
+   audioPlayerPoster.src = trackList[nextTrack][2];
+  };
+ </script>
+</body>
+
+</html>
